@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>淘焦点</title>
+	<style>
+     *{margin:0px;padding:0px;}
+     body{background:#ccc;}
+     #div1{
+     	width:520px;
+     	height:280px;
+     	margin:100px auto;
+        
+        overflow:hidden;
+        position:relative;
+     }
+     #div1 ul{width:500%;margin-left:0px;}
+     #div1 li{
+     	list-style:none;
+     	width:520px;
+        height:280px;
+        float:left;
+     }
+     .btn .left,.btn .right{
+     	background:rgba(0,0,0,.3);
+     	width:26px;
+     	height:36px;
+     	position:absolute;
+     	top:122px;/*减去280一半 再减去btn高度的一半*/
+        color:#fff;
+        font-size:20px;
+        text-align:center;/*水平居中*/
+        line-height:36px;/*垂直居中 btn的高度*/
+        cursor:pointer;
+     }
+     .left{left:0px;}
+     .right{right:0px;}
+     .nav{
+        width:70px;
+        height:10px;
+        
+        position:absolute;
+        top:250px;
+        left:225px;
+     }
+     .nav span{
+        width:10px;
+        height:10px;/*span是行内元素不能添加宽高 想加得float*/
+        float:left;
+        background:#909;
+        border-radius:50%;
+        margin-left:3px;
+        cursor:pointer;
+     }
+     .nav span.on{background:#f50;}
+	</style>
+    <script type="text/javascript">
+     window.onload=function(){
+        var oSpan=document.getElementsByTagName("span");
+        var oUl=document.getElementsByTagName("ul")[0];
+        var oBtn=document.getElementsByClassName("btn")[0];
+        var oDiv=oBtn.getElementsByTagName("div");
+        var oDiv1=document.getElementById("div1");
+        var index=0;
+        var num=0;
+        var timer;//定义一个变量来保存我们的定时器
+        play();
+        for(var i=0;i<oSpan.length;i++){
+            oSpan[i].dian=i;//存储序列号0 1 2 3 4
+            oSpan[i].onclick=function(){
+                oSpan[index].className="";
+                index=this.dian;
+                this.className="on";
+                oUl.style.marginLeft=-520*index+"px";
+            }  
+        }
+        for(var i=0;i<oDiv.length;i++){
+            oDiv[i].an=i;//存储序列号的(下标) 
+            oDiv[i].onclick=function(){
+                num=this.an;//把序列号赋值给num
+                oSpan[index].className="";
+                if(num){//判断num （下标）当值为0的时候向右走
+                                        //当值为1的时候向左走
+                  index++;//index=index+1
+                  if(index>4){//判断Index大于图片下标的时候
+                    index=0;//让它还等于0
+                  }
+                }else{
+                  index--;
+                  if(index<0){
+                    index=4;
+                  }
+                }
+               oSpan[index].className="on";
+               oUl.style.marginLeft=-520*index+"px";
+            }
+        }
+        oDiv1.omouseover=function(){
+            clearInterval(timer);
+        }
+        oDiv1.omouseout=function(){
+            play();
+        }
+        function play(){
+            timer=setInterval(function(){
+                oSpan[index].className="";
+                index++;
+                if(index>4){
+                    index=0;
+                }
+                oSpan[index].className="on";
+                oUl.style.marginLeft=-520*index+"px";
+            },2000);
+        }
+     }
+    </script>
+</head>
+<body>
+	<div id="div1">
+		<ul>
+			<li><img src="img/1.jpg"></li>
+			<li><img src="img/2.jpg"></li>
+			<li><img src="img/3.jpg"></li>
+			<li><img src="img/4.jpg"></li>
+			<li><img src="img/5.jpg"></li>
+		</ul>
+		<div class="btn">
+			<div class="left"><</div>
+			<div class="right">></div>
+		</div>
+        <div class="nav">
+            <span class="on"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+	</div>
+</body>
+</html>
